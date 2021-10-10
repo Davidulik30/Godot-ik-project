@@ -1,0 +1,155 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://MeshInstance.gd" type="Script" id=1]
+[ext_resource path="res://hand/hand.glb" type="PackedScene" id=2]
+[ext_resource path="res://hand/SkeletonIK.gd" type="Script" id=3]
+[ext_resource path="res://Area.gd" type="Script" id=4]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 21.538, 1, 5 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.376471, 1, 0.266667, 1 )
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+size = Vector3( 7, 1, 7 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.438, 2, 0.495 )
+
+[sub_resource type="Animation" id=5]
+tracks/0/type = "method"
+tracks/0/path = NodePath("SkeletonIK")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ false ],
+"method": "start"
+}, {
+"args": [  ],
+"method": "stop"
+} ]
+}
+
+[sub_resource type="CubeMesh" id=6]
+
+[sub_resource type="BoxShape" id=7]
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0.992157, 0.952941, 0.0196078, 1 )
+
+[sub_resource type="CubeMesh" id=9]
+material = SubResource( 8 )
+size = Vector3( 40, 1, 40 )
+
+[sub_resource type="SphereShape" id=10]
+
+[sub_resource type="BoxShape" id=11]
+
+[sub_resource type="CubeMesh" id=12]
+
+[node name="Spatial" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.45742, 3.07382 )
+
+[node name="conveer" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.645, -3.51706, -2.99625 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="conveer2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5246, -3.51706, -2.99625 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="stopLatform" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.90399, -3.51706, -2.99625 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="hand" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.72984, 0, 0.683618, 0, 1, 0, -0.683618, 0, 0.72984, -3.32054, -1.96442, 0.781146 )
+
+[node name="Skeleton" parent="hand/Armature" index="0"]
+bones/1/bound_children = [ NodePath("BoneAttachment2") ]
+
+[node name="BoneAttachment2" type="BoneAttachment" parent="hand/Armature/Skeleton" index="0"]
+transform = Transform( 0.999999, 0.00121117, 0.000142896, -0.00121182, 0.999989, 0.00461316, -0.000137307, -0.00461333, 0.999989, -7.27179e-12, 0.0831568, 2.91045e-11 )
+bone_name = "bone_1"
+
+[node name="MeshInstance2" type="MeshInstance" parent="hand/Armature/Skeleton/BoneAttachment2"]
+transform = Transform( 0.999997, -0.00121182, -0.000137031, 0.00121117, 0.999988, -0.00461331, 0.000142634, 0.00461316, 0.999986, 0.025108, 3.64364, 0.749096 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="hand/Armature/Skeleton/BoneAttachment2/MeshInstance2"]
+transform = Transform( 1, 2.23518e-08, -8.9407e-07, -7.45058e-09, 1, -7.45058e-09, 8.04663e-07, -2.23517e-08, 1, -0.148072, -0.0221901, -1.4855 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="SkeletonIK" type="SkeletonIK" parent="hand/Armature/Skeleton" index="2"]
+process_priority = 1
+root_bone = "bone"
+tip_bone = "bone_2"
+target_node = NodePath("../../../../Cube")
+script = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="hand/Armature/Skeleton" index="3"]
+anims/Ik_FINALLY = SubResource( 5 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -1, 1.96658e-08, -8.51821e-08, 0, 0.97437, 0.224951, 8.74228e-08, 0.224951, -0.97437, -2.71048, 2.51968, -15.324 )
+
+[node name="KinematicBody" type="KinematicBody" parent="."]
+transform = Transform( 0.514798, 0, 0, 0, 1, 0, 0, 0, 0.546808, -3.73364, -1.26917, -3.56039 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="MeshInstance" type="MeshInstance" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0664563, -0.350495, 0.571557 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128029, -0.34707, 0.582675 )
+shape = SubResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.8742, -6.64026, 0 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="Cube" type="KinematicBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.672, 0, -2.345 )
+script = ExtResource( 4 )
+
+[node name="Position3D" type="Position3D" parent="Cube"]
+transform = Transform( 0.729838, 3.25963e-09, 0.683616, -2.31506e-09, 1, 2.32831e-09, -0.683617, 3.72529e-09, 0.729837, 0, 0, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area" type="Area" parent="Cube/Position3D"]
+transform = Transform( 1, 0, 0, 0, 1, -2.22045e-16, 0, 0, 1, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube/Position3D/Area"]
+transform = Transform( 2, -4.44089e-16, -5.96046e-08, 0, 2, 0, 0, 4.44089e-16, 2, 0, 0, 0 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube"]
+shape = SubResource( 11 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Cube"]
+mesh = SubResource( 12 )
+material/0 = null
+
+[connection signal="input_event" from="Cube/Position3D/Area" to="Cube" method="_on_Area_input_event"]
+
+[editable path="hand"]
